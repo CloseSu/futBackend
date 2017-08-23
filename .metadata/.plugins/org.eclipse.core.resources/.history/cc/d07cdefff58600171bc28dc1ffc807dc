@@ -1,0 +1,15 @@
+package com.futureBacken.controller;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class LogerController {
+	
+	@RequestMapping(value = "/test/{name}", method = RequestMethod.GET, produces = "application/json")
+	public String first(@PathVariable String name) {
+		return "test" + name;
+	}
+}

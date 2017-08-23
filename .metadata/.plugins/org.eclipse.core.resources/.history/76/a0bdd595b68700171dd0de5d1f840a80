@@ -1,0 +1,6 @@
+package com.core;
+
+@Configuration
+public class MyConfiguration {
+
+}

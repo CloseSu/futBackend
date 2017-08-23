@@ -1,0 +1,43 @@
+package com.futureBacken.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.futureBacken.model.User;
+import com.futureBacken.service.UserService;
+
+@RestController
+public class LogerController {
+	
+	private User user;
+	@Autowired
+	private UserService userService;
+	
+	@RequestMapping(value = "/getUser/{name}", produces = "application/json")
+	public User first(@PathVariable String name) {
+		user = new User();
+		user.setUserId(1L);
+		user.setUsername(name);
+		user.setPassword("123456");
+		return user;
+	}
+	
+	@RequestMapping(value = "/signUp",  method = RequestMethod.POST, produces = "application/json")
+	public String signUp() {
+		user = new User();
+		user.setUsername("Test");
+		user.setPassword("123456");
+        userService.save(user);
+        return "'result':'true'";
+	}
+	
+	
+}

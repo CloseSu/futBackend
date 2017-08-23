@@ -1,0 +1,31 @@
+package com.futureBacken.com.futureBacken;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.futureBacken.controller.LogerController;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+public class LogerControllerTest {
+
+	private MockMvc mockMvc;
+	private LogerController logerController;
+	
+	@Before
+	public void setup() {
+		this.mockMvc = MockMvcBuilders.standaloneSetup(logerController).build();
+	}
+	
+	@Test
+	public void testFirst() throws Exception {
+		this.mockMvc.perform(get("/test/{name}","hello")).andExpect(view().name("testhello"));
+	}
+}

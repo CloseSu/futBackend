@@ -1,0 +1,14 @@
+package com.futureBacken.service.impl;
+
+import com.futureBacken.model.User;
+import com.futureBacken.service.UserService;
+
+public class UserServiceImpl implements UserService {
+
+	@Override
+	public void save(User user) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
