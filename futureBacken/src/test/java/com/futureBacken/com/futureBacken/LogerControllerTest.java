@@ -31,4 +31,6 @@ public class LogerControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().json("{'username':'hello'}"));
 	}
+	
+	
 }

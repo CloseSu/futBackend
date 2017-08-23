@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<item value="true" key="ProjectSelectionDialog.show_all"/>
 	<section name="DialogBounds_SuperInterfaceSelectionDialog">
 		<item value="425" key="DIALOG_WIDTH"/>
 		<item value="1|Microsoft JhengHei UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft JhengHei UI" key="DIALOG_FONT_NAME"/>

@@ -1,0 +1,20 @@
+package com.futureBacken.controller;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.futureBacken.model.Future;
+
+@RestController
+@CrossOrigin(origins = {"http://localhost:4200"}, maxAge = 4800, allowCredentials = "false") 
+public class FutureDataController {
+	
+	@RequestMapping(value = "/getTodayData", method = RequestMethod.GET, produces = "application/json")
+	public Future getTodayData() {
+		 System.setProperty("webdriver.chrome.driver", "C:\\WebDriver\\chromedriver.exe");
+		 WebDriver driver = new ChromeDriver();		
+		return null;
+	}
+}

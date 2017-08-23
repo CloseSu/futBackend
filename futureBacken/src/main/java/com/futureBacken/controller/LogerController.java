@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.futureBacken.model.ResponseData;
 import com.futureBacken.model.User;
 import com.futureBacken.service.UserService;
 
@@ -30,14 +31,33 @@ public class LogerController {
 	}
 	
 	@RequestMapping(value = "/signUp", method = RequestMethod.POST, produces = "application/json")
-	public String signUp(@RequestBody User user) {
-		String name = user.getUsername();
-		String password = user.getPassword();
-		System.out.println(name);
-		System.out.println(password);
+	public ResponseData signUp(@RequestBody User user) {
+		ResponseData res = new ResponseData();
+		//check repeat data
+		if(userService.findByUsername(user.getUsername()) != null) {
+			res.setResult(false);
+			res.setReturnMsg("This name has been registered!");			
+		}else {
+			userService.save(user);
+			res.setResult(true);
+			res.setReturnMsg("SignUp success!");
+		}
 		
-        return "'result':'true'";
+		return res;
 	}
 	
+	@RequestMapping(value = "/signIn", method = RequestMethod.POST, produces = "application/json")
+	public ResponseData signIn(@RequestBody User user) {
+		ResponseData res = new ResponseData();
+		if(userService.findByUsername(user.getUsername()) != null) {
+			res.setResult(true);
+			res.setReturnMsg("SignIn success!");
+			res.setUser(user);
+		}else {
+			res.setResult(false);
+			res.setReturnMsg("Please SignUp!!");
+		}
+		return res;
+	}
 	
 }

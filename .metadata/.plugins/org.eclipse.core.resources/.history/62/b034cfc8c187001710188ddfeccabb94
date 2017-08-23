@@ -1,0 +1,6 @@
+package com.futureBacken.model;
+
+public class ResponseData {
+	Boolean result;
+	String returnMsg;
+}

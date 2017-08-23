@@ -1,10 +1,17 @@
 package com.futureBacken.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User {
@@ -19,6 +26,10 @@ public class User {
 	
 	@Column(name = "password", nullable = false, unique = true)
 	private String password;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+	private List<Trade> trades;
 	
 	public Long getUserId() {
 		return userId;
@@ -39,6 +50,12 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public List<Trade> getTrades() {
+		return trades;
+	}
+	public void setTrades(List<Trade> trades) {
+		this.trades = trades;
 	}
 	
 	

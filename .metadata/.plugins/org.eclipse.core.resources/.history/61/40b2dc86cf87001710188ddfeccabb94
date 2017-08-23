@@ -1,0 +1,33 @@
+package com.futureBacken.model;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+public class Future {
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	@Column(name = "contract", nullable = true)
+	private String contract;
+	private BigDecimal contractMonth;
+	private BigDecimal open;
+	private BigDecimal high;
+	private BigDecimal low;
+	private BigDecimal last;
+	private BigDecimal change;
+	private BigDecimal percent;
+	private BigDecimal volumn;
+	private BigDecimal settlementPrice;
+	private BigDecimal openInteres;
+	private BigDecimal bestBid;
+	private BigDecimal bestAsk;
+	private BigDecimal historicalHigh;
+	private BigDecimal historicalLow;
+	
+}
