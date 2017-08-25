@@ -1,0 +1,55 @@
+package com.futureBacken.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.futureBacken.dao.TradeDao;
+import com.futureBacken.model.Trade;
+import com.futureBacken.service.TradeService;
+
+@Service
+@Transactional
+public class TradeServiceImpl implements TradeService {
+
+	@Autowired
+	private TradeDao tradeDao;
+	
+	@Override
+	public void setTradeData(Trade trade) {
+		tradeDao.save(trade);
+	}
+
+	@Override
+	public List<Trade> findTradeList(String dateStart, String dateEnd) {
+		return tradeDao.findTradeList(dateStart, dateEnd);
+	}
+
+	@Override
+	public void caculateTrade() {
+		
+	}
+
+	@Override
+	public void updateTradeList(Map<String, Object> conditions) {
+		Map<String,Map<String,Object>> dataMaps = new HashMap<>();
+		
+		for(String key: conditions.keySet()) {
+			String[] keysplited = key.split("_");
+			String id = keysplited[1];
+			String valueKey = keysplited[0];
+			Object data = conditions.get(key);
+			
+			Map<String,Object> dataMap = dataMaps.get(id) == null? new HashMap<>(): dataMaps.get(id);
+			dataMap.put(valueKey, data);
+			dataMaps.put(id, dataMap);
+			
+			
+		}
+	}
+
+}

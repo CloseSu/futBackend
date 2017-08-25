@@ -1,0 +1,16 @@
+package com.futureBacken.dao;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import com.futureBacken.model.Future;
+
+public interface FutureDao extends CrudRepository<Future,Long>{
+	Future findByDate(String date);
+	Future findByContractMonth(String contractMonth);
+	
+	@Query("SELECT * FROM future f WHERE f.date >= :dateStart and f.date <= :dateEnd")
+	List<Future> findHistoryData();
+}

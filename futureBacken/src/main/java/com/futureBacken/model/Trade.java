@@ -7,8 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class Trade {
@@ -17,30 +16,35 @@ public class Trade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
  	
- 	@ManyToOne
-    @JoinColumn(name = "user_id")
+ 	@Transient
     private User user;
+ 	
+ 	@Column(name = "userid", nullable = false)
+ 	private Long userid;
+ 	
+    @Column(name = "tradetype", nullable = false)
+ 	private String tradetype;
  	
     @Column(name = "date", nullable = false)
  	private String date;
     
-    @Column(name = "buyPrice", nullable = true)
- 	private BigDecimal buyPrice;
+    @Column(name = "buyprice", nullable = true)
+ 	private BigDecimal buyprice;
     
-    @Column(name = "sellPrice", nullable = true)
- 	private BigDecimal sellPrice;
+    @Column(name = "sellprice", nullable = true)
+ 	private BigDecimal sellprice;
     
-    @Column(name = "buyUnits", nullable = true)
- 	private BigDecimal buyUnits;
+    @Column(name = "buyunits", nullable = true)
+ 	private BigDecimal buyunits;
     
-    @Column(name = "sellUnits", nullable = true)
- 	private BigDecimal sellUnits;
+    @Column(name = "sellunits", nullable = true)
+ 	private BigDecimal sellunits;
     
-    @Column(name = "totoUnits", nullable = true)
- 	private BigDecimal totoUnits;
+    @Column(name = "totolunits", nullable = true)
+ 	private BigDecimal totolunits;
     
-    @Column(name = "totolMoney", nullable = true)
- 	private BigDecimal totolMoney;
+    @Column(name = "totolmoney", nullable = true)
+ 	private BigDecimal totolmoney;
  	 	
 	public Long getId() {
 		return id;
@@ -54,42 +58,59 @@ public class Trade {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public BigDecimal getBuyPrice() {
-		return buyPrice;
+	public User getUser() {
+		return user;
 	}
-	public void setBuyPrice(BigDecimal buyPrice) {
-		this.buyPrice = buyPrice;
+	public void setUser(User user) {
+		this.user = user;
 	}
-	public BigDecimal getSellPrice() {
-		return sellPrice;
+	public BigDecimal getBuyprice() {
+		return buyprice;
 	}
-	public void setSellPrice(BigDecimal sellPrice) {
-		this.sellPrice = sellPrice;
+	public void setBuyprice(BigDecimal buyprice) {
+		this.buyprice = buyprice;
 	}
-	public BigDecimal getBuyUnits() {
-		return buyUnits;
+	public BigDecimal getSellprice() {
+		return sellprice;
 	}
-	public void setBuyUnits(BigDecimal buyUnits) {
-		this.buyUnits = buyUnits;
+	public void setSellprice(BigDecimal sellprice) {
+		this.sellprice = sellprice;
 	}
-	public BigDecimal getSellUnits() {
-		return sellUnits;
+	public BigDecimal getBuyunits() {
+		return buyunits;
 	}
-	public void setSellUnits(BigDecimal sellUnits) {
-		this.sellUnits = sellUnits;
+	public void setBuyunits(BigDecimal buyunits) {
+		this.buyunits = buyunits;
 	}
-	public BigDecimal getTotoUnits() {
-		return totoUnits;
+	public BigDecimal getSellunits() {
+		return sellunits;
 	}
-	public void setTotoUnits(BigDecimal totoUnits) {
-		this.totoUnits = totoUnits;
+	public void setSellunits(BigDecimal sellunits) {
+		this.sellunits = sellunits;
 	}
-	public BigDecimal getTotolMoney() {
-		return totolMoney;
+	public BigDecimal getTotolunits() {
+		return totolunits;
 	}
-	public void setTotolMoney(BigDecimal totolMoney) {
-		this.totolMoney = totolMoney;
+	public void setTotolunits(BigDecimal totolunits) {
+		this.totolunits = totolunits;
 	}
- 	
+	public BigDecimal getTotolmoney() {
+		return totolmoney;
+	}
+	public void setTotolmoney(BigDecimal totolmoney) {
+		this.totolmoney = totolmoney;
+	}
+	public String getTradetype() {
+		return tradetype;
+	}
+	public void setTradetype(String tradetype) {
+		this.tradetype = tradetype;
+	}
+	public Long getUserid() {
+		return userid;
+	}
+	public void setUserid(Long userid) {
+		this.userid = userid;
+	}
  	
 }

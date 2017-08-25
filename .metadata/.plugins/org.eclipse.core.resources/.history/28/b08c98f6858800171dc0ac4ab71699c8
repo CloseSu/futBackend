@@ -1,0 +1,12 @@
+package com.futureBacken.dao;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.futureBacken.model.Future;
+
+public interface FutureDao extends CrudRepository<Future,Long>{
+	Future findByDate(String date);
+	Future findByContractMonth(String contractMonth);
+	
+	
+}

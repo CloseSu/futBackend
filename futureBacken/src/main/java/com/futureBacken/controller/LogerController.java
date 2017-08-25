@@ -23,7 +23,7 @@ public class LogerController {
 	@RequestMapping(value = "/getUser/{name}",produces = "application/json")
 	public User first(@PathVariable String name) {
 		user = new User();
-		user.setUserId(1L);
+		user.setUserid(1L);
 		user.setUsername(name);
 		user.setPassword("123456");
 		System.out.println("test");
@@ -41,6 +41,7 @@ public class LogerController {
 			userService.save(user);
 			res.setResult(true);
 			res.setReturnMsg("SignUp success!");
+			res.setUser(userService.findByUsername(user.getUsername()));
 		}
 		
 		return res;
@@ -52,7 +53,7 @@ public class LogerController {
 		if(userService.findByUsername(user.getUsername()) != null) {
 			res.setResult(true);
 			res.setReturnMsg("SignIn success!");
-			res.setUser(user);
+			res.setUser(userService.findByUsername(user.getUsername()));
 		}else {
 			res.setResult(false);
 			res.setReturnMsg("Please SignUp!!");

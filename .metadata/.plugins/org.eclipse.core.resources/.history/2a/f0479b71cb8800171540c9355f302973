@@ -1,0 +1,9 @@
+package com.futureBacken.dao;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.futureBacken.model.TsecWeighted;
+
+public interface TsecWeightedDao extends CrudRepository<TsecWeighted,Long> {
+
+}

@@ -1,0 +1,197 @@
+package com.futureBacken.service.impl;
+
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.LineIterator;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.futureBacken.dao.FutureDao;
+import com.futureBacken.model.Future;
+import com.futureBacken.service.FutureDataService;
+import com.futureBacken.utils.DateHelper;
+
+@Service
+@Transactional
+public class FutureDataServiceImpl implements FutureDataService {
+
+	private String today;
+	private DateHelper dateHelper;
+	
+	@Autowired
+	private FutureDao futureDao;
+	
+	@Override
+	public List<Future> getDataToday() throws ParseException {
+		List<Future> futureList = this.getDataFromWebSite();
+		for(Future future: futureList) {
+			Future futureFromDb = futureDao.findByContractMonth(future.getContractMonth());
+			if(futureFromDb != null) {
+			  futureDao.delete(futureFromDb);
+			}
+			futureDao.save(future);
+		}
+		return futureList;
+	}
+
+	
+	private List<Future> getDataFromWebSite() throws ParseException {
+		List<Future> futureList = new ArrayList<>();
+		//set driver
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\acer\\Documents\\sourceCode\\TDD-20170821T012436Z-001\\TDD\\TDD.Java\\Tools\\WebDriver\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();		
+		//target html
+		driver.get("http://www.taifex.com.tw/chinese/3/3_1_1.asp");
+		
+		WebElement table = driver.findElement(By.xpath("//*[@id=\"printhere\"]/table/tbody/tr[2]/td/table[2]"));
+		//get all the TR elements from the table
+		List<WebElement> rows = table.findElements(By.tagName("tr"));
+		today = driver.findElement(By.xpath("//*[@id=\"printhere\"]/table/tbody/tr[2]/td/h3")).getText();
+		today = today.substring(today.length()-10, today.length());
+		
+		// And iterate over them, getting the cells
+		for (WebElement row: rows) {
+		    List<WebElement> cells = row.findElements(By.tagName("td"));
+		    // "-" means no data
+		    if(validateData(cells)) {
+		    	futureList.add(genFutureEntit(cells));
+		    }
+		    //printData
+		    for (int j = 0; j < cells.size(); j++) {
+		    	// "-" means no data
+		    	if(!cells.get(2).getText().equals("-")) {
+		    		System.out.print(cells.get(j).getText()+" ");
+		    	}
+		    }
+		    System.out.println();
+		}
+		driver.close();
+		return futureList;
+	}
+	
+	private Future genFutureEntit(List<WebElement> cells) throws ParseException {
+		Future future = new Future();
+		future.setDate(today);
+		future.setMilliseconds(getDateHelper().stringDateToMillisecond(today));	
+		future.setContract(cells.get(0).getText());
+		future.setContractMonth(cells.get(1).getText());
+		future.setOpen(stb(cells.get(2).getText()));
+		future.setHigh(stb(cells.get(3).getText()));
+		future.setLow(stb(cells.get(4).getText()));
+		future.setLast(stb(cells.get(5).getText()));
+		future.setChangeMoney(cells.get(6).getText());
+		future.setPercent(cells.get(7).getText());
+		future.setVolumn(stb(cells.get(8).getText()));
+		future.setSettlementPrice(cells.get(9).getText().equals("-")? null: stb(cells.get(9).getText()));
+		future.setOpenInteres(cells.get(10).getText().equals("-")? null: stb(cells.get(10).getText()));
+		future.setBestBid(stb(cells.get(11).getText()));
+		future.setBestAsk(stb(cells.get(12).getText()));
+		future.setHistoricalHigh(stb(cells.get(13).getText()));
+		future.setHistoricalLow(stb(cells.get(14).getText()));
+		
+		return future;
+	}
+	
+	private DateHelper getDateHelper() {
+		if(dateHelper == null) {
+			dateHelper = new DateHelper();
+		}
+		return dateHelper;
+	}
+	
+	private BigDecimal stb(String raw) {
+		try {
+			return new BigDecimal(raw);
+		}catch(Exception e){
+			return BigDecimal.ZERO;
+		}
+	}
+	
+	private Boolean validateData(List<WebElement> cells) {
+		try {
+			new BigDecimal(cells.get(2).getText());
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
+
+	@Override
+	public List<Future> getHistoryData(String dateStart, String dateEnd, String contractMonth) throws ParseException {
+		return futureDao.findFutureList(getDateHelper().dateFormat(dateStart), getDateHelper().dateFormat(dateEnd), contractMonth);
+	}
+
+
+	@Override
+	public List<BigDecimal[]> getHistoryDataTransfer(String dateStart, String dateEnd, String contractMonth) throws ParseException {
+		List<Future> futureList = futureDao.findFutureList(getDateHelper().dateFormat(dateStart), getDateHelper().dateFormat(dateEnd), contractMonth);
+		List<BigDecimal[]> returnList = new ArrayList<>();
+		
+		for(Future future: futureList) {
+			BigDecimal[] data = {new BigDecimal(future.getMilliseconds()),
+								 future.getOpen(),
+								 future.getHigh(),
+								 future.getLow(),
+								 future.getLast()};
+			returnList.add(data);
+		}
+		return returnList;
+	}
+
+
+	@Override
+	public void loadHistoryData() throws ParseException {
+		File file = FileUtils.getFile("C:\\Users\\acer\\Downloads\\2016_fut\\2016_fut.csv");
+		LineIterator it = null;
+		try {
+			it = FileUtils.lineIterator(file);
+		    while (it.hasNext()) {
+		    	String st = it.nextLine();
+		    	String[] data = st.split(",");
+		    	if(data[1].equals("TX")) {
+		    		System.out.println(st);
+		    		futureDao.save(genFutureEntit(data));
+		    	}
+		    }
+			   
+		 } catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+		   LineIterator.closeQuietly(it);
+		 }
+		
+	}
+	private Future genFutureEntit(String[] data) throws ParseException {
+		Future future = new Future();
+		future.setDate(data[0]);
+		future.setMilliseconds(getDateHelper().stringDateToMillisecond(data[0]));	
+		future.setContract(data[1]);
+		future.setContractMonth(data[2]);
+		future.setOpen(stb(data[3]));
+		future.setHigh(stb(data[4]));
+		future.setLow(stb(data[5]));
+		future.setLast(stb(data[6]));
+		future.setChangeMoney(data[7]);
+		future.setPercent(data[8]);
+		future.setVolumn(stb(data[9]));
+		future.setSettlementPrice(data[10].equals("-")? null: stb(data[10]));
+		future.setOpenInteres(data[11].equals("-")? null: stb(data[11]));
+		future.setBestBid(stb(data[12]));
+		future.setBestAsk(stb(data[13]));
+		future.setHistoricalHigh(stb(data[14]));
+		future.setHistoricalLow(stb(data[15]));
+		return future;
+	}
+	
+}

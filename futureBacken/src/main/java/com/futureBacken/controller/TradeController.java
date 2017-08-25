@@ -1,0 +1,37 @@
+package com.futureBacken.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.futureBacken.model.Trade;
+import com.futureBacken.service.TradeService;
+
+@RestController
+@CrossOrigin(origins = {"http://localhost:4200"}, maxAge = 4800, allowCredentials = "false") 
+public class TradeController {
+
+	@Autowired
+	private TradeService tradeService;
+	
+	@RequestMapping(value = "/setTradeData", method = RequestMethod.POST, produces = "application/json")
+	public void setTradeData(@RequestBody Trade trade) {
+		tradeService.setTradeData(trade);
+	}
+	
+	@RequestMapping(value = "/getTradeList", method = RequestMethod.POST, produces = "application/json")
+	public List<Trade> getTradeList(@RequestBody Map<String, String> condition){
+		return tradeService.findTradeList(condition.get("dateStart"), condition.get("dateEnd"));
+	}
+	
+	@RequestMapping(value = "/updateTradeList", method = RequestMethod.POST, produces = "application/json")
+	public void updateTradeList(@RequestBody Map<String, Object> condition) {
+		tradeService.updateTradeList(condition);
+	}
+}

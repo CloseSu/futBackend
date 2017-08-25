@@ -1,0 +1,45 @@
+package com.futureBacken.controller;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.futureBacken.model.Future;
+import com.futureBacken.service.FutureDataService;
+
+@RestController
+@CrossOrigin(origins = {"http://localhost:4200"}, maxAge = 4800, allowCredentials = "false") 
+public class FutureDataController {
+	
+	@Autowired
+	private FutureDataService futureDataService;
+	
+	@RequestMapping(value = "/getTodayData", method = RequestMethod.GET, produces = "application/json")
+	public List<Future> getTodayData() throws ParseException {
+		List<Future> futureList = futureDataService.getDataToday();
+		return futureList;
+	}
+	
+	@RequestMapping(value = "/getHistoryData", method = RequestMethod.POST, produces = "application/json")
+	public List<BigDecimal[]> getHistoryData(@RequestBody Map<String, String> codition) throws ParseException{
+		return futureDataService.getHistoryDataTransfer(codition.get("dateStart"), codition.get("dateEnd"), codition.get("contractMonth"));
+	}
+	
+	@RequestMapping(value = "/loadHistoryData", method = RequestMethod.GET, produces = "application/json")
+	public void loadHistoryData() throws ParseException {
+		futureDataService.loadHistoryData();
+	}
+	
+	@RequestMapping(value = "/downloadHistoryData", method = RequestMethod.GET, produces = "application/json")
+	public void downloadHistoryData() throws ParseException {
+		futureDataService.downloadHistoryData();
+	}
+}

@@ -1,0 +1,15 @@
+package com.futureBacken.dao;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
+import com.futureBacken.model.TsecWeighted;
+
+public interface TsecWeightedDao extends CrudRepository<TsecWeighted,Long> {
+	@Query("SELECT f FROM TsecWeighted f WHERE f.date >= :dateStart AND f.date <= :dateEnd ")
+	List<TsecWeighted> findFutureList(@Param("dateStart") String dateStart, @Param("dateEnd") String dateEnd);
+
+}

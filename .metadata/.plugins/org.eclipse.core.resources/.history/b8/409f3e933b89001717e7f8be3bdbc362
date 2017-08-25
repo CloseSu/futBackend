@@ -1,0 +1,5 @@
+package com.futureBacken.dao;
+
+public interface TtradeDao {
+
+}

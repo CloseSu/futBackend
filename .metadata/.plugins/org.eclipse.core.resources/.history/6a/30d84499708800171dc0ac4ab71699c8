@@ -1,0 +1,7 @@
+package com.futureBacken.service;
+
+import com.futureBacken.model.Future;
+
+public interface FutureDataService {
+	Future getDataToday();
+}

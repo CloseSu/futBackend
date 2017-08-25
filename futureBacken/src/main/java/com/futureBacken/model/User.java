@@ -2,24 +2,20 @@ package com.futureBacken.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Transient;
 
 @Entity
 public class User {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "userId", nullable = false, updatable = false)
-	private Long userId;
+    @Column(name = "userid", nullable = false, updatable = false)
+	private Long userid;
 	
 	@Column(name = "username", nullable = false, unique = true)
 	private String username;
@@ -27,15 +23,14 @@ public class User {
 	@Column(name = "password", nullable = false, unique = true)
 	private String password;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
+	@Transient
 	private List<Trade> trades;
 	
-	public Long getUserId() {
-		return userId;
+	public Long getUserid() {
+		return userid;
 	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUserid(Long userid) {
+		this.userid = userid;
 	}
 	
 	public String getUsername() {

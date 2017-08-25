@@ -1,0 +1,13 @@
+package com.futureBacken.dao;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.futureBacken.model.Future;
+
+public interface FutureDao extends CrudRepository<Future,Long>{
+	Future findByDate(String date);
+	Future findByContractMonth(String contractMonth);
+	
+//	@Query("SELECT f FROM future f WHERE f.date >= :dateStart AND f.date <= :dateEnd")
+//	List<Future> find(@Param("dateStart") String dateStart, @Param("dateEnd") String dateEnd);
+}

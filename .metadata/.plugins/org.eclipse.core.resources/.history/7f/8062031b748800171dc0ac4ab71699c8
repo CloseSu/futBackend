@@ -1,0 +1,10 @@
+package com.futureBacken.dao;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.futureBacken.model.Future;
+import com.futureBacken.model.User;
+
+public interface FutureDao extends CrudRepository<Future,Long>{
+
+}

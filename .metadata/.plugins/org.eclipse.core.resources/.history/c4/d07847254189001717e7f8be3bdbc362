@@ -1,0 +1,30 @@
+package com.futureBacken.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.futureBacken.dao.TradeDao;
+import com.futureBacken.model.Trade;
+import com.futureBacken.service.TradeService;
+
+@Service
+@Transactional
+public class TradeServiceImpl implements TradeService {
+
+	@Autowired
+	private TradeDao tradeDao;
+	
+	@Override
+	public void setTradeData(Trade trade) {
+		tradeDao.save(trade);
+	}
+
+	@Override
+	public List<Trade> findTradeList(String dateStart, String dateEnd) {
+		tradeDao.findTradeList(dateStart, dateEnd);
+	}
+
+}

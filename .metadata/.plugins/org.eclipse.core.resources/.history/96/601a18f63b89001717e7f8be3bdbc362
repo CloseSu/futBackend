@@ -1,0 +1,20 @@
+package com.futureBacken.service.impl;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.futureBacken.service.TradeService;
+
+@Service
+@Transactional
+public class TradeServiceImpl implements TradeService {
+
+	private TradeDao tradeDao;
+	
+	@Override
+	public void setTradeData() {
+		// TODO Auto-generated method stub
+
+	}
+
+}

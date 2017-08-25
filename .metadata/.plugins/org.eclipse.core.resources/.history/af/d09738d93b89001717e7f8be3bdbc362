@@ -1,0 +1,13 @@
+package com.futureBacken.service.impl;
+
+import com.futureBacken.service.TradeService;
+
+public class TradeServiceImpl implements TradeService {
+
+	@Override
+	public void setTradeData() {
+		// TODO Auto-generated method stub
+
+	}
+
+}

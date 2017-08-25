@@ -1,0 +1,9 @@
+package com.futureBacken.dao;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.futureBacken.model.Trade;
+
+public interface TradeDao extends CrudRepository<Trade,Long>{
+
+}

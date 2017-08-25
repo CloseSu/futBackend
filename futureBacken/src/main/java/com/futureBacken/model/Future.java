@@ -15,50 +15,56 @@ public class Future {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@Column(name = "date", nullable = true)
+	private String date;
+	
+	@Column(name = "milliseconds", nullable = true)
+	private Long milliseconds;
+	
 	@Column(name = "contract", nullable = true)
-	private String contract;
+	private String contract;//契約
 	
 	@Column(name = "contractMonth", nullable = true)
-	private BigDecimal contractMonth;
+	private String contractMonth;//到期 月份	(週別)
 	
 	@Column(name = "open", nullable = true)
-	private BigDecimal open;
+	private BigDecimal open;//開盤價
 	
 	@Column(name = "high", nullable = true)
-	private BigDecimal high;
+	private BigDecimal high;//最高價
 	
 	@Column(name = "low", nullable = true)
-	private BigDecimal low;
+	private BigDecimal low;//最低價	
 	
 	@Column(name = "last", nullable = true)
-	private BigDecimal last;
+	private BigDecimal last;//最後成交價
 	
 	@Column(name = "changeMoney", nullable = true)
-	private BigDecimal changeMoney;
+	private String changeMoney;//漲跌價
 	
 	@Column(name = "percent", nullable = true)
-	private BigDecimal percent;
+	private String percent;//漲跌%
 	
 	@Column(name = "volumn", nullable = true)
-	private BigDecimal volumn;
+	private BigDecimal volumn;//*成交量
 	
 	@Column(name = "settlementPrice", nullable = true)
-	private BigDecimal settlementPrice;
+	private BigDecimal settlementPrice;//結算價
 	
 	@Column(name = "openInteres", nullable = true)
-	private BigDecimal openInteres;
+	private BigDecimal openInteres;//*未沖銷契約量
 	
 	@Column(name = "bestBid", nullable = true)
-	private BigDecimal bestBid;
+	private BigDecimal bestBid;//最後最佳買價
 	
 	@Column(name = "bestAsk", nullable = true)
-	private BigDecimal bestAsk;
+	private BigDecimal bestAsk;//最後最佳賣價
 	
 	@Column(name = "historicalHigh", nullable = true)
-	private BigDecimal historicalHigh;
+	private BigDecimal historicalHigh;//歷史最高價
 	
 	@Column(name = "historicalLow", nullable = true)
-	private BigDecimal historicalLow;
+	private BigDecimal historicalLow;//歷史最低價
 
 	public Long getId() {
 		return id;
@@ -76,11 +82,11 @@ public class Future {
 		this.contract = contract;
 	}
 
-	public BigDecimal getContractMonth() {
+	public String getContractMonth() {
 		return contractMonth;
 	}
 
-	public void setContractMonth(BigDecimal contractMonth) {
+	public void setContractMonth(String contractMonth) {
 		this.contractMonth = contractMonth;
 	}
 
@@ -116,19 +122,19 @@ public class Future {
 		this.last = last;
 	}
 
-	public BigDecimal getChangeMoney() {
+	public String getChangeMoney() {
 		return changeMoney;
 	}
 
-	public void setChangeMoney(BigDecimal changeMoney) {
+	public void setChangeMoney(String changeMoney) {
 		this.changeMoney = changeMoney;
 	}
 
-	public BigDecimal getPercent() {
+	public String getPercent() {
 		return percent;
 	}
 
-	public void setPercent(BigDecimal percent) {
+	public void setPercent(String percent) {
 		this.percent = percent;
 	}
 
@@ -187,6 +193,21 @@ public class Future {
 	public void setHistoricalLow(BigDecimal historicalLow) {
 		this.historicalLow = historicalLow;
 	}
-	
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public Long getMilliseconds() {
+		return milliseconds;
+	}
+
+	public void setMilliseconds(Long milliseconds) {
+		this.milliseconds = milliseconds;
+	}
 	
 }
