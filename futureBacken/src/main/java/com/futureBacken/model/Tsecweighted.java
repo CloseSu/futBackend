@@ -45,6 +45,8 @@ public class Tsecweighted {
     @Column(name = "avg60", nullable = false)
     private BigDecimal avg60;
     
+    @Column(name = "avg120", nullable = false)
+    private BigDecimal avg120;
     
 	public Long getId() {
 		return id;
@@ -132,6 +134,14 @@ public class Tsecweighted {
 
 	public void setAvg60(BigDecimal avg60) {
 		this.avg60 = avg60;
+	}
+
+	public BigDecimal getAvg120() {
+		return avg120;
+	}
+
+	public void setAvg120(BigDecimal avg120) {
+		this.avg120 = avg120;
 	}
 				
 	

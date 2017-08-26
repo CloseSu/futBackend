@@ -160,12 +160,13 @@ public class FutureDataServiceImpl implements FutureDataService {
 
 	@Override
 	public void loadHistoryData() throws ParseException {
-		File file = FileUtils.getFile("C:\\Users\\acer\\Documents\\historyData\\history.csv");
+		File file = FileUtils.getFile("C:\\Users\\Su\\Documents\\historyData\\20170825.csv");
 		LineIterator it = null;
 		try {
 			int count = 0;
 			BigDecimal avg20 = BigDecimal.ZERO;
 			BigDecimal avg60 = BigDecimal.ZERO;
+			BigDecimal avg120 = BigDecimal.ZERO;
 			
 			it = FileUtils.lineIterator(file);
 		    while (it.hasNext()) {
@@ -183,12 +184,18 @@ public class FutureDataServiceImpl implements FutureDataService {
 		    	if(count <= 60) {
 		    		avg60 = avg60.add(stb(data[4])); 
 		    	}
+		    	if(count <= 120) {
+		    		avg120 = avg120.add(stb(data[4])); 
+		    	}
 		    	
 		    	if(count == 20) {
 		    		avg20 = avg20.divide(new BigDecimal(20),0,BigDecimal.ROUND_HALF_UP);
 		    	}
 		    	if(count == 60) {
 		    		avg60 = avg60.divide(new BigDecimal(60),0,BigDecimal.ROUND_HALF_UP);
+		    	}
+		    	if(count == 120) {
+		    		avg120 = avg120.divide(new BigDecimal(120),0,BigDecimal.ROUND_HALF_UP);
 		    	}
 		    	
 		    	if(count > 20) {
@@ -197,8 +204,12 @@ public class FutureDataServiceImpl implements FutureDataService {
 		    	if(count > 60) {
 		    		avg60 = ((avg60.multiply(new BigDecimal(59))).add(stb(data[4]))).divide(new BigDecimal(60),0,BigDecimal.ROUND_HALF_UP);
 		    	}
+		    	if(count > 120) {
+		    		avg120 = ((avg120.multiply(new BigDecimal(119))).add(stb(data[4]))).divide(new BigDecimal(120),0,BigDecimal.ROUND_HALF_UP);
+		    	}
 		    	
-		    	tsecWeightedDao.save(genTsecWeighted(data, count < 20? BigDecimal.ZERO: avg20, count < 60? BigDecimal.ZERO: avg60));
+		    	
+		    	tsecWeightedDao.save(genTsecWeighted(data, count < 20? BigDecimal.ZERO: avg20, count < 60? BigDecimal.ZERO: avg60, count < 120? BigDecimal.ZERO: avg120));
 		    }
 		 } catch (IOException e) {
 			e.printStackTrace();
@@ -208,7 +219,7 @@ public class FutureDataServiceImpl implements FutureDataService {
 		
 	}
 
-	private Tsecweighted genTsecWeighted(String[] data, BigDecimal avg20, BigDecimal avg60) throws ParseException {
+	private Tsecweighted genTsecWeighted(String[] data, BigDecimal avg20, BigDecimal avg60, BigDecimal avg120) throws ParseException {
 		Tsecweighted tsecWeighted = new Tsecweighted();
 		String date = data[0];
 		if(date.length() != 10) {
@@ -239,6 +250,7 @@ public class FutureDataServiceImpl implements FutureDataService {
 		tsecWeighted.setVolume(stb(data[6]));
 		tsecWeighted.setAvg20(avg20);
 		tsecWeighted.setAvg60(avg60);
+		tsecWeighted.setAvg120(avg120);
 		return tsecWeighted;
 	}
 	
@@ -248,6 +260,7 @@ public class FutureDataServiceImpl implements FutureDataService {
 		List<BigDecimal[]> mainList = new ArrayList<>();
 		List<BigDecimal[]> avg20List = new ArrayList<>();
 		List<BigDecimal[]> avg60List = new ArrayList<>();
+		List<BigDecimal[]> avg120List = new ArrayList<>();
 		
 		Tsecweighted maxContact = Collections.max(tsecWeightedList, Comparator.comparing(c -> c.getHigh()));
 		Tsecweighted minContact = Collections.min(tsecWeightedList, Comparator.comparing(c -> c.getLow()));
@@ -266,10 +279,15 @@ public class FutureDataServiceImpl implements FutureDataService {
 			BigDecimal[] avg60 = {new BigDecimal(tsecWeighted.getMilliseconds()),
 					  			  tsecWeighted.getAvg60()};
 			avg60List.add(avg60);
+			BigDecimal[] avg120 = {new BigDecimal(tsecWeighted.getMilliseconds()),
+		  			  			  tsecWeighted.getAvg120()};
+			avg120List.add(avg120);
+			
 		}
 		returnMap.put("mainList", mainList);
 		returnMap.put("avg20List", avg20List);
 		returnMap.put("avg60List", avg60List);
+		returnMap.put("avg120List", avg120List);
 		returnMap.put("max", maxContact.getHigh());
 		returnMap.put("min", minContact.getLow());
 		
