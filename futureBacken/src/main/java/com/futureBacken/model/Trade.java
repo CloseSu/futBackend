@@ -45,6 +45,9 @@ public class Trade {
     
     @Column(name = "totolmoney", nullable = true)
  	private BigDecimal totolmoney;
+    
+    @Column(name = "processed", nullable = true)
+    private Boolean processed = false;
  	 	
 	public Long getId() {
 		return id;
@@ -112,5 +115,12 @@ public class Trade {
 	public void setUserid(Long userid) {
 		this.userid = userid;
 	}
+	public Boolean getProcessed() {
+		return processed;
+	}
+	public void setProcessed(Boolean processed) {
+		this.processed = processed;
+	}
  	
+	
 }
