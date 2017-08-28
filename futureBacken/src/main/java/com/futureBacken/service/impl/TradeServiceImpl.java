@@ -33,12 +33,13 @@ public class TradeServiceImpl implements TradeService {
 
 	//caculate unit
 	private void porcessDataList(List<Trade> dbList) {
+		int index1 = 0;
+		int index2 = 1;
+		
 		for(int i = 0; i < dbList.size(); i++) {
-			int index1 = i;
-			Trade tradeDb = dbList.get(index1);
-			int index2 = ++i;
-			if(dbList.size() % 2 == 0) {
-				Trade tradeDb2 = dbList.get(index2);
+			Trade tradeDb = dbList.get(index1++);
+			if(dbList.size() > index2) {
+				Trade tradeDb2 = dbList.get(index2++);
 				if((tradeDb.getProcessed() == null || tradeDb.getProcessed() == false) &&
 						(tradeDb2.getProcessed() == null || tradeDb2.getProcessed() == false)	) {
 					if(tradeDb.getTradetype().equals("PB") && tradeDb2.getTradetype().equals("PS")) {
