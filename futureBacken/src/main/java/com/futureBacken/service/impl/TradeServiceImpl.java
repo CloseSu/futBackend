@@ -33,26 +33,30 @@ public class TradeServiceImpl implements TradeService {
 
 	//caculate unit
 	private void porcessDataList(List<Trade> dbList) {
-		for(int i = 0; i < dbList.size(); i = i+2) {
-			Trade tradeDb = dbList.get(i);
-			Trade tradeDb2 = dbList.get(++i);
-			
-			if((tradeDb.getProcessed() == null || tradeDb.getProcessed() == false) &&
-			   (tradeDb2.getProcessed() == null || tradeDb2.getProcessed() == false)	) {
-				if(tradeDb.getTradetype().equals("PB") && tradeDb2.getTradetype().equals("PS")) {
-					tradeDb2.setTotolunits(tradeDb2.getSellunits().subtract(tradeDb.getBuyunits()));
-					tradeDb2.setTotolmoney((tradeDb2.getSellprice().subtract(tradeDb.getBuyprice()).multiply(tradeDb2.getSellunits()).multiply(new BigDecimal(50))));
+		for(int i = 0; i < dbList.size(); i++) {
+			int index1 = i;
+			Trade tradeDb = dbList.get(index1);
+			int index2 = ++i;
+			if(dbList.size() % 2 == 0) {
+				Trade tradeDb2 = dbList.get(index2);
+				if((tradeDb.getProcessed() == null || tradeDb.getProcessed() == false) &&
+						(tradeDb2.getProcessed() == null || tradeDb2.getProcessed() == false)	) {
+					if(tradeDb.getTradetype().equals("PB") && tradeDb2.getTradetype().equals("PS")) {
+						tradeDb2.setTotolunits(tradeDb2.getSellunits().subtract(tradeDb.getBuyunits()));
+						tradeDb2.setTotolmoney((tradeDb2.getSellprice().subtract(tradeDb.getBuyprice()).multiply(tradeDb2.getSellunits()).multiply(new BigDecimal(50))));
+					}
+					if(tradeDb.getTradetype().equals("NS") && tradeDb2.getTradetype().equals("NB")) {
+						tradeDb2.setTotolunits(tradeDb2.getSellunits().subtract(tradeDb.getBuyunits()));
+						tradeDb2.setTotolmoney((tradeDb2.getSellprice().subtract(tradeDb.getBuyprice()).multiply(tradeDb2.getSellunits()).multiply(new BigDecimal(50))));
+					}
+					tradeDb.setProcessed(true);
+					tradeDb2.setProcessed(true);
+					
+					tradeDao.save(tradeDb);
+					tradeDao.save(tradeDb2);
 				}
-				if(tradeDb.getTradetype().equals("NS") && tradeDb2.getTradetype().equals("NB")) {
-					tradeDb2.setTotolunits(tradeDb2.getSellunits().subtract(tradeDb.getBuyunits()));
-					tradeDb2.setTotolmoney((tradeDb2.getSellprice().subtract(tradeDb.getBuyprice()).multiply(tradeDb2.getSellunits()).multiply(new BigDecimal(50))));
-				}
-				tradeDb.setProcessed(true);
-				tradeDb2.setProcessed(true);
-				
-				tradeDao.save(tradeDb);
-				tradeDao.save(tradeDb2);
 			}
+			
 		}
 	}
 	
