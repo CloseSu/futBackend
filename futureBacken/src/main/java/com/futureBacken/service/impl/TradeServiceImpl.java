@@ -45,16 +45,21 @@ public class TradeServiceImpl implements TradeService {
 					if(tradeDb.getTradetype().equals("PB") && tradeDb2.getTradetype().equals("PS")) {
 						tradeDb2.setTotolunits(tradeDb2.getSellunits().subtract(tradeDb.getBuyunits()));
 						tradeDb2.setTotolmoney((tradeDb2.getSellprice().subtract(tradeDb.getBuyprice()).multiply(tradeDb2.getSellunits()).multiply(new BigDecimal(50))));
+						tradeDb.setProcessed(true);
+						tradeDb2.setProcessed(true);
+						tradeDao.save(tradeDb);
+						tradeDao.save(tradeDb2);
 					}
 					if(tradeDb.getTradetype().equals("NS") && tradeDb2.getTradetype().equals("NB")) {
 						tradeDb2.setTotolunits(tradeDb2.getBuyunits().subtract(tradeDb.getSellunits()));
 						tradeDb2.setTotolmoney((tradeDb2.getBuyprice().subtract(tradeDb.getSellprice()).multiply(tradeDb2.getBuyunits()).multiply(new BigDecimal(50))).negate());
+						tradeDb.setProcessed(true);
+						tradeDb2.setProcessed(true);
+						tradeDao.save(tradeDb);
+						tradeDao.save(tradeDb2);
 					}
-					tradeDb.setProcessed(true);
-					tradeDb2.setProcessed(true);
-					
-					tradeDao.save(tradeDb);
-					tradeDao.save(tradeDb2);
+
+
 				}
 			}
 			
