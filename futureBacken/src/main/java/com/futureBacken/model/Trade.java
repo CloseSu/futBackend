@@ -48,7 +48,10 @@ public class Trade {
     
     @Column(name = "processed", nullable = true)
     private Boolean processed = false;
- 	 	
+
+	@Column(name = "percentage", nullable = true)
+	private BigDecimal percentage;
+
 	public Long getId() {
 		return id;
 	}
@@ -121,6 +124,12 @@ public class Trade {
 	public void setProcessed(Boolean processed) {
 		this.processed = processed;
 	}
- 	
-	
+
+	public BigDecimal getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(BigDecimal percentage) {
+		this.percentage = percentage;
+	}
 }

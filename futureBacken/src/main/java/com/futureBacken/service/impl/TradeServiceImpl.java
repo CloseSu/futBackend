@@ -19,6 +19,7 @@ public class TradeServiceImpl implements TradeService {
 
 	@Autowired
 	private TradeDao tradeDao;
+	private BigDecimal ensureMoney = new BigDecimal(20750);
 	
 	@Override
 	public void setTradeData(Trade trade) {
@@ -44,7 +45,9 @@ public class TradeServiceImpl implements TradeService {
 						(tradeDb2.getProcessed() == null || tradeDb2.getProcessed() == false)	) {
 					if(tradeDb.getTradetype().toUpperCase().equals("PB") && tradeDb2.getTradetype().toUpperCase().equals("PS")) {
 						tradeDb2.setTotolunits(tradeDb2.getSellunits().subtract(tradeDb.getBuyunits()));
-						tradeDb2.setTotolmoney((tradeDb2.getSellprice().subtract(tradeDb.getBuyprice()).multiply(tradeDb2.getSellunits()).multiply(new BigDecimal(50))));
+						BigDecimal money = (tradeDb2.getSellprice().subtract(tradeDb.getBuyprice()).multiply(tradeDb2.getSellunits()).multiply(new BigDecimal(50)));
+						tradeDb2.setTotolmoney(money);
+						tradeDb2.setPercentage(money.divide(tradeDb2.getSellunits().multiply(ensureMoney), BigDecimal.ROUND_HALF_UP));
 						tradeDb.setProcessed(true);
 						tradeDb2.setProcessed(true);
 						tradeDao.save(tradeDb);
@@ -52,7 +55,9 @@ public class TradeServiceImpl implements TradeService {
 					}
 					if(tradeDb.getTradetype().equals("NS") && tradeDb2.getTradetype().equals("NB")) {
 						tradeDb2.setTotolunits(tradeDb2.getBuyunits().subtract(tradeDb.getSellunits()));
-						tradeDb2.setTotolmoney((tradeDb2.getBuyprice().subtract(tradeDb.getSellprice()).multiply(tradeDb2.getBuyunits()).multiply(new BigDecimal(50))).negate());
+						BigDecimal money = (tradeDb2.getBuyprice().subtract(tradeDb.getSellprice()).multiply(tradeDb2.getBuyunits()).multiply(new BigDecimal(50))).negate();
+						tradeDb2.setTotolmoney(money);
+						tradeDb2.setPercentage(money.divide(tradeDb2.getBuyunits().multiply(ensureMoney), BigDecimal.ROUND_HALF_UP));
 						tradeDb.setProcessed(true);
 						tradeDb2.setProcessed(true);
 						tradeDao.save(tradeDb);
