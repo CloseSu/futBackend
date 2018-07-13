@@ -42,7 +42,7 @@ public class TradeServiceImpl implements TradeService {
 				Trade tradeDb2 = dbList.get(index2++);
 				if((tradeDb.getProcessed() == null || tradeDb.getProcessed() == false) &&
 						(tradeDb2.getProcessed() == null || tradeDb2.getProcessed() == false)	) {
-					if(tradeDb.getTradetype().equals("PB") && tradeDb2.getTradetype().equals("PS")) {
+					if(tradeDb.getTradetype().toUpperCase().equals("PB") && tradeDb2.getTradetype().toUpperCase().equals("PS")) {
 						tradeDb2.setTotolunits(tradeDb2.getSellunits().subtract(tradeDb.getBuyunits()));
 						tradeDb2.setTotolmoney((tradeDb2.getSellprice().subtract(tradeDb.getBuyprice()).multiply(tradeDb2.getSellunits()).multiply(new BigDecimal(50))));
 						tradeDb.setProcessed(true);
